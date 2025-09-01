@@ -2,26 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Uncopyable Text Bypass - Made by Aryan</title>
   <style>
     body {
       margin: 0;
-      padding: 20px;
+      padding: 15px;
       font-family: monospace;
       background: black;
       color: #00ff00;
+      line-height: 1.6;
     }
     h1, h2 {
       text-align: center;
       text-shadow: 0 0 8px #00ff00;
+      margin: 10px 0;
+      font-size: 1.5em;
     }
     .search {
       display: flex;
       justify-content: center;
-      margin: 20px 0;
+      margin: 15px 0;
     }
     .search input {
-      width: 90%;
+      width: 100%;
       max-width: 400px;
       padding: 10px;
       border: 1px solid #0f0;
@@ -33,26 +37,31 @@
     .payload {
       background: rgba(0, 0, 0, 0.85);
       border: 1px solid #00ff00;
-      padding: 15px;
-      margin: 20px auto;
+      padding: 12px;
+      margin: 15px auto;
       border-radius: 10px;
+      width: 100%;
       max-width: 900px;
-      line-height: 1.6;
       box-shadow: 0 0 12px #00ff00;
+    }
+    .payload h3 {
+      font-size: 1.1em;
+      margin-bottom: 8px;
     }
     code {
       display: block;
       background: #000;
       color: #0f0;
-      padding: 12px;
+      padding: 10px;
       border-radius: 5px;
       overflow-x: auto;
       white-space: pre-wrap;
-      line-height: 1.6;
-      font-size: 15px;
+      font-size: 14px;
+      line-height: 1.5;
+      max-width: 100%;
     }
     button {
-      margin-top: 10px;
+      margin-top: 8px;
       padding: 6px 12px;
       background: #000;
       border: 1px solid #0f0;
@@ -60,21 +69,23 @@
       cursor: pointer;
       border-radius: 5px;
       transition: 0.2s;
+      font-size: 14px;
+      width: 100%;
+      max-width: 150px;
     }
     button:hover {
       background: #0f0;
       color: #000;
     }
     footer {
-      margin: 40px auto 20px;
+      margin: 30px auto 15px;
       max-width: 900px;
-      font-size: 14px;
+      font-size: 13px;
       text-align: center;
-      line-height: 1.6;
       color: #0f0;
       opacity: 0.9;
       border-top: 1px solid #0f0;
-      padding-top: 15px;
+      padding-top: 12px;
     }
     /* ✅ Copy success toast */
     #toast {
@@ -88,9 +99,9 @@
       padding: 10px;
       position: fixed;
       left: 50%;
-      bottom: 30px;
+      bottom: 20px;
       font-size: 14px;
-      z-index: 1;
+      z-index: 1000;
       box-shadow: 0 0 10px #0f0;
     }
     #toast.show {
@@ -99,11 +110,19 @@
     }
     @keyframes fadein {
       from {bottom: 0; opacity: 0;}
-      to {bottom: 30px; opacity: 1;}
+      to {bottom: 20px; opacity: 1;}
     }
     @keyframes fadeout {
-      from {bottom: 30px; opacity: 1;}
+      from {bottom: 20px; opacity: 1;}
       to {bottom: 0; opacity: 0;}
+    }
+
+    /* 🖥️ Desktop tweaks */
+    @media (min-width: 768px) {
+      h1 { font-size: 2em; }
+      h2 { font-size: 1.4em; }
+      code { font-size: 15px; }
+      button { width: auto; }
     }
   </style>
 </head>
@@ -186,13 +205,11 @@ javascript:(function(){
         showToast();
       });
     }
-
     function showToast() {
       const toast = document.getElementById("toast");
       toast.className = "show";
       setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
     }
-
     function filterPayloads() {
       let input = document.getElementById("searchBox").value.toLowerCase();
       let payloads = document.getElementsByClassName("payload");
