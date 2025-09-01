@@ -1,223 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Uncopyable Text Bypass - Made by Aryan</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+  <title>Uncopyable Text Bypass — Made by Aryan Giri</title>
   <style>
-    body {
-      margin: 0;
-      padding: 15px;
-      font-family: monospace;
-      background: black;
-      color: #00ff00;
-      line-height: 1.6;
+    :root{
+      --bg:#000;
+      --green:#00ff00;
+      --muted:#0f0;
+      --card-bg:#050505;
+      --radius:10px;
+      --gap:12px;
     }
-    h1, h2 {
-      text-align: center;
-      text-shadow: 0 0 8px #00ff00;
-      margin: 10px 0;
-      font-size: 1.5em;
-    }
-    .search {
-      display: flex;
-      justify-content: center;
-      margin: 15px 0;
-    }
-    .search input {
-      width: 100%;
-      max-width: 400px;
-      padding: 10px;
-      border: 1px solid #0f0;
-      border-radius: 5px;
-      background: black;
-      color: #0f0;
-      font-size: 16px;
-    }
-    .payload {
-      background: rgba(0, 0, 0, 0.85);
-      border: 1px solid #00ff00;
-      padding: 12px;
-      margin: 15px auto;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 900px;
-      box-shadow: 0 0 12px #00ff00;
-    }
-    .payload h3 {
-      font-size: 1.1em;
-      margin-bottom: 8px;
-    }
-    code {
-      display: block;
-      background: #000;
-      color: #0f0;
-      padding: 10px;
-      border-radius: 5px;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      font-size: 14px;
-      line-height: 1.5;
-      max-width: 100%;
-    }
-    button {
-      margin-top: 8px;
-      padding: 6px 12px;
-      background: #000;
-      border: 1px solid #0f0;
-      color: #0f0;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: 0.2s;
-      font-size: 14px;
-      width: 100%;
-      max-width: 150px;
-    }
-    button:hover {
-      background: #0f0;
-      color: #000;
-    }
-    footer {
-      margin: 30px auto 15px;
-      max-width: 900px;
-      font-size: 13px;
-      text-align: center;
-      color: #0f0;
-      opacity: 0.9;
-      border-top: 1px solid #0f0;
-      padding-top: 12px;
-    }
-    /* ✅ Copy success toast */
-    #toast {
-      visibility: hidden;
-      min-width: 200px;
-      margin-left: -100px;
-      background: #0f0;
-      color: black;
-      text-align: center;
-      border-radius: 5px;
-      padding: 10px;
-      position: fixed;
-      left: 50%;
-      bottom: 20px;
-      font-size: 14px;
-      z-index: 1000;
-      box-shadow: 0 0 10px #0f0;
-    }
-    #toast.show {
-      visibility: visible;
-      animation: fadein 0.5s, fadeout 0.5s 2s;
-    }
-    @keyframes fadein {
-      from {bottom: 0; opacity: 0;}
-      to {bottom: 20px; opacity: 1;}
-    }
-    @keyframes fadeout {
-      from {bottom: 20px; opacity: 1;}
-      to {bottom: 0; opacity: 0;}
+    /* Reset & base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      padding:14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      background:var(--bg);
+      color:var(--green);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      -webkit-text-size-adjust:100%;
+      line-height:1.5;
     }
 
-    /* 🖥️ Desktop tweaks */
-    @media (min-width: 768px) {
-      h1 { font-size: 2em; }
-      h2 { font-size: 1.4em; }
-      code { font-size: 15px; }
-      button { width: auto; }
+    header{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:10px;
+    }
+    .title {
+      font-size:1.15rem;
+      font-weight:700;
+      text-shadow:0 0 6px var(--green);
+    }
+    .subtitle {
+      font-size:0.82rem;
+      color:var(--muted);
+      text-align:right;
+    }
+
+    /* Search */
+    .search {
+      margin:10px 0 8px;
+    }
+    .search input{
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      background:#020202;
+      border:1px solid #133;
+      color:var(--muted);
+      font-size:15px;
+      outline:none;
+    }
+
+    /* Payload card / mobile-first */
+    .payload {
+      background:linear-gradient(180deg,#050505,#0a0a0a);
+      border:1px solid rgba(0,255,0,0.12);
+      border-radius:var(--radius);
+      padding:12px;
+      margin:10px 0;
+      box-shadow:0 0 10px rgba(0,255,0,0.03);
+      width:100%;
+    }
+    details[open] { box-shadow:0 0 18px rgba(0,255,0,0.06); }
+
+    summary{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      list-style:none;
+      cursor:pointer;
+      user-select:none;
+      gap:8px;
+      padding:4px 0;
+    }
+    summary::-webkit-details-marker{display:none}
+    .payload h3 {
+      margin:0;
+      font-size:1rem;
+      color:var(--green);
+      text-shadow:0 0 4px rgba(0,255,0,0.12);
+    }
+    .meta { font-size:0.78rem; color:var(--muted); }
+
+    /* Code block area */
+    .codewrap{
+      position:relative;
+      margin-top:10px;
+      border-radius:8px;
+      overflow:hidden;
+      border:1px solid rgba(0,255,0,0.06);
+    }
+    pre.code {
+      margin:0;
+      padding:12px;
+      background:#000;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.55;
+      white-space:pre-wrap;       /* wrap long lines */
+      word-break:break-word;     /* prevent overflow */
+      -webkit-overflow-scrolling:touch;
+    }
+
+    /* Copy button (inline, large tap target) */
+    .copy-btn {
+      position:absolute;
+      right:8px;
+      top:8px;
+      background:rgba(0,0,0,0.7);
+      border:1px solid rgba(0,255,0,0.14);
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:8px;
+      font-size:13px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      cursor:pointer;
+      touch-action:manipulation;
+    }
+    .copy-btn:active{ transform:translateY(1px) }
+
+    /* Toast */
+    #toast{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      background:var(--green);
+      color:black;
+      padding:10px 14px;
+      border-radius:8px;
+      font-weight:700;
+      display:none;
+      box-shadow:0 0 12px rgba(0,255,0,0.18);
+      z-index:9999;
+    }
+
+    /* Footer */
+    footer{
+      margin-top:16px;
+      border-top:1px solid rgba(0,255,0,0.06);
+      padding-top:12px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+    /* Desktop polish */
+    @media(min-width:720px){
+      body{padding:20px}
+      .title{font-size:1.4rem}
+      .subtitle{font-size:0.9rem}
+      .payload { padding:14px; margin:14px 0; }
+      pre.code { font-size:15px; }
+      .copy-btn { font-size:13px; padding:8px 12px; }
+      header { gap:18px; }
     }
   </style>
 </head>
 <body>
-  <h1>🕵️‍♂️ Uncopyable Text Bypass</h1>
-  <h2>👨‍💻 Made by Aryan Giri</h2>
 
-  <!-- 🔍 Search -->
+  <header>
+    <div>
+      <div class="title">🕵️‍♂️ Uncopyable Text Bypass</div>
+      <div class="subtitle">Made by Aryan Giri — for study & research notes</div>
+    </div>
+  </header>
+
   <div class="search">
-    <input type="text" id="searchBox" placeholder="Search payloads..." onkeyup="filterPayloads()">
+    <input id="searchBox" type="search" placeholder="Search snippets (title or content)..." inputmode="search" autocomplete="off">
   </div>
 
-  <!-- Payloads -->
-  <div class="payload">
-    <h3>Console Snippet: Copy All Paragraphs</h3>
-    <code id="p1">
+  <!-- PAYLOAD 1 -->
+  <div class="payload" data-keywords="console copy paragraphs p innerText">
+    <details>
+      <summary>
+        <div>
+          <h3>Console Snippet — Copy all & print</h3>
+          <div class="meta">Use DevTools console to print all & copy manually</div>
+        </div>
+        <div class="meta">Tap to expand</div>
+      </summary>
+
+      <div class="codewrap" aria-hidden="false">
+        <button class="copy-btn" data-target="p1">📋 Copy</button>
+        <pre id="p1" class="code" tabindex="0">
 console.log(
   Array.from(document.querySelectorAll("p"))
     .map(p => p.innerText)
     .join("\n\n")
 );
-    </code>
-    <button onclick="copyCode('p1')">📋 Copy</button>
+        </pre>
+      </div>
+    </details>
   </div>
 
-  <div class="payload">
-    <h3>Console Snippet: Copy to Clipboard</h3>
-    <code id="p2">
+  <!-- PAYLOAD 2 -->
+  <div class="payload" data-keywords="console copy clipboard copyToClipboard copy">
+    <details>
+      <summary>
+        <div>
+          <h3>Console Snippet — Copy to clipboard (DevTools)</h3>
+          <div class="meta">Works in Chrome/Edge DevTools (use `copy(...)` helper)</div>
+        </div>
+        <div class="meta">Tap to expand</div>
+      </summary>
+
+      <div class="codewrap">
+        <button class="copy-btn" data-target="p2">📋 Copy</button>
+        <pre id="p2" class="code" tabindex="0">
 copy(
   Array.from(document.querySelectorAll("p"))
     .map(p => p.innerText)
     .join("\n\n")
 );
-    </code>
-    <button onclick="copyCode('p2')">📋 Copy</button>
+        </pre>
+      </div>
+    </details>
   </div>
 
-  <div class="payload">
-    <h3>Force Unlock Copy/Paste</h3>
-    <code id="p3">
+  <!-- PAYLOAD 3 -->
+  <div class="payload" data-keywords="unlock selection userSelect pointerEvents oncopy oncontextmenu eventListeners cloneNode">
+    <details>
+      <summary>
+        <div>
+          <h3>Force unlock — Enable selection & remove inline handlers</h3>
+          <div class="meta">Resets common handlers + re-enables selection & pointer events</div>
+        </div>
+        <div class="meta">Tap to expand</div>
+      </summary>
+
+      <div class="codewrap">
+        <button class="copy-btn" data-target="p3">📋 Copy</button>
+        <pre id="p3" class="code" tabindex="0">
 (function() {
   document.querySelectorAll("*").forEach(el => {
-    el.oncopy = el.oncut = el.onpaste = el.onselectstart = el.oncontextmenu = null;
-    el.style.userSelect = "text";
-    el.style.pointerEvents = "auto";
+    try {
+      el.oncopy = el.oncut = el.onpaste = el.onselectstart = el.oncontextmenu = null;
+      el.style.userSelect = "text";
+      el.style.webkitUserSelect = "text";
+      el.style.MozUserSelect = "text";
+      el.style.pointerEvents = "auto";
+    } catch(e){}
   });
+
+  // Replace body to remove listeners added with addEventListener
+  try {
+    const clone = document.body.cloneNode(true);
+    document.body.parentNode.replaceChild(clone, document.body);
+  } catch(e){}
+
   console.log("🔥 Copy & selection unlocked!");
 })();
-    </code>
-    <button onclick="copyCode('p3')">📋 Copy</button>
+        </pre>
+      </div>
+    </details>
   </div>
 
-  <div class="payload">
-    <h3>Bookmarklet: One-Click Copy Unlock</h3>
-    <code id="p4">
+  <!-- PAYLOAD 4 -->
+  <div class="payload" data-keywords="bookmarklet one click copy unlock save txt download">
+    <details>
+      <summary>
+        <div>
+          <h3>Bookmarklet — One-click copy & download</h3>
+          <div class="meta">Save as bookmark URL, tap when on target page</div>
+        </div>
+        <div class="meta">Tap to expand</div>
+      </summary>
+
+      <div class="codewrap">
+        <button class="copy-btn" data-target="p4">📋 Copy</button>
+        <pre id="p4" class="code" tabindex="0">
 javascript:(function(){
   let text=[...document.querySelectorAll("p")].map(p=>p.innerText).join("\n\n");
-  navigator.clipboard.writeText(text).then(()=>alert("✅ Text copied to clipboard!"));
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>alert('✅ Text copied to clipboard!'));
+  } else {
+    // fallback: download file
+    let blob=new Blob([text],{type:'text/plain'});
+    let a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='notes.txt';
+    a.click();
+  }
 })();
-    </code>
-    <button onclick="copyCode('p4')">📋 Copy</button>
+        </pre>
+      </div>
+    </details>
   </div>
 
+  <!-- FOOTER / DISCLAIMER -->
   <footer>
-    ⚠️ <b>Disclaimer:</b><br>
-    This project is for <b>educational & research purposes only</b>.<br>
-    The scripts are intended for creating <b>personal notes while studying</b>.<br>
-    Do <u>not</u> use these methods to repost or steal others’ work without permission.<br>
-    Copying without credit is <b>unethical and illegal</b> — you may face legal consequences.<br><br>
-    👨‍💻 Made by Aryan Giri
+    <strong>⚠️ Disclaimer — Read carefully</strong><br>
+    This repository and snippets are provided <strong>only for educational & research purposes</strong>,
+    to help you make <em>personal study notes</em> when websites block selection/copy. Do <u>not</u>
+    use these methods to repost, redistribute, or monetize others’ work without permission or proper credit.
+    Unauthorized copying may be <strong>unethical and illegal</strong> and can lead to DMCA claims or other legal action.
+    <div style="margin-top:8px">👨‍💻 Made by Aryan Giri</div>
   </footer>
 
-  <!-- ✅ Toast -->
-  <div id="toast">✅ Code copied to clipboard!</div>
+  <!-- Toast -->
+  <div id="toast" role="status" aria-live="polite">Copied ✅</div>
 
   <script>
-    function copyCode(id) {
-      const text = document.getElementById(id).innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        showToast();
-      });
-    }
-    function showToast() {
-      const toast = document.getElementById("toast");
-      toast.className = "show";
-      setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
-    }
-    function filterPayloads() {
-      let input = document.getElementById("searchBox").value.toLowerCase();
-      let payloads = document.getElementsByClassName("payload");
-      for (let p of payloads) {
-        let text = p.innerText.toLowerCase();
-        p.style.display = text.includes(input) ? "" : "none";
+    (function(){
+      const toast = document.getElementById('toast');
+
+      function showToast(msg = 'Copied ✅') {
+        toast.textContent = msg;
+        toast.style.display = 'block';
+        toast.style.opacity = '1';
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(()=>{ toast.style.display='none'; }, 2000);
       }
-    }
+
+      // Robust copy function: clipboard API + fallback
+      async function copyText(text){
+        if(!text) return showToast('Nothing to copy');
+        // try navigator.clipboard
+        try {
+          if(navigator.clipboard && navigator.clipboard.writeText){
+            await navigator.clipboard.writeText(text);
+            return showToast('Copied to clipboard ✅');
+          }
+        } catch(e){ /* fall through */ }
+
+        // fallback: textarea + execCommand
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly','');
+          ta.style.position = 'absolute';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          ta.setSelectionRange(0, ta.value.length);
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          return showToast('Copied (fallback) ✅');
+        } catch(err){
+          // fallback: download a small file
+          try {
+            const blob = new Blob([text],{type:'text/plain'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'notes.txt';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            return showToast('Saved as notes.txt');
+          } catch(e){
+            return showToast('Copy failed');
+          }
+        }
+      }
+
+      // Attach click handlers to copy buttons
+      document.querySelectorAll('.copy-btn').forEach(btn=>{
+        btn.addEventListener('click', async (ev)=>{
+          ev.preventDefault();
+          const id = btn.getAttribute('data-target');
+          const node = document.getElementById(id);
+          if(!node) return showToast('Snippet not found');
+          // read innerText to avoid markup noise
+          const text = node.innerText.replace(/\u00A0/g,' ');
+          await copyText(text.trim());
+        }, {passive:false});
+      });
+
+      // Search/filter (mobile-optimized)
+      const search = document.getElementById('searchBox');
+      search.addEventListener('input', ()=>{
+        const q = search.value.trim().toLowerCase();
+        document.querySelectorAll('.payload').forEach(card=>{
+          if(!q){ card.style.display = ''; return; }
+          const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+          const inKeywords = keywords.includes(q);
+          const text = card.innerText.toLowerCase();
+          const inText = text.includes(q);
+          card.style.display = (inKeywords || inText) ? '' : 'none';
+        });
+      });
+
+      // Make <summary> keyboard accessible on mobile for easier expanding
+      document.querySelectorAll('summary').forEach(s=>{
+        s.addEventListener('keydown', e=>{
+          if(e.key === 'Enter' || e.key === ' '){
+            e.preventDefault();
+            (s.parentElement.open) ? s.parentElement.removeAttribute('open') : s.parentElement.setAttribute('open','');
+          }
+        });
+      });
+
+    })();
   </script>
 </body>
 </html>
